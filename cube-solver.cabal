@@ -1,0 +1,83 @@
+cabal-version:      3.0
+
+name:               cube-solver
+
+version:            0.1.0.0
+
+synopsis:           Rubik's cube solver
+
+description:        Epic cube solver program in Haskell. 
+                    Generates a PDF solving manual from a Rubik's cube scramble.
+
+license:            BSD-3-Clause
+license-file:       LICENSE
+
+author:             Vebjørn Øiestad
+
+build-type:         Simple
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+
+    exposed-modules:  PDFCube,
+                      CubeSolverServer,
+                      Cube,
+                      CubeState,
+                      CubeParser,
+                      CubeValidator,
+                      CFOP.CFOP,
+                      CFOP.PLL,
+                      CFOP.OLL,
+                      CFOP.F2L,
+                      CFOP.Cross,
+                      Triggers,
+                      AlgExpr
+
+    build-depends:    base ^>=4.17.2.1,
+                      mtl,
+                      text,
+                      megaparsec,
+                      HPDF,
+                      process,
+                      time,
+                      servant,
+                      servant-server,
+                      wai,
+                      warp,
+                      bytestring,
+                      template-haskell
+
+    hs-source-dirs:   src
+
+    default-language: Haskell2010
+
+executable cube-solver
+    main-is:          Main.hs
+
+    build-depends:    base ^>=4.17.2.1,
+                      cube-solver,
+                      options
+
+    hs-source-dirs:   app
+
+    default-language: Haskell2010
+
+test-suite cube-solver-tests
+    type:             exitcode-stdio-1.0
+    
+    main-is:          CubeSolverTest.hs
+    
+    build-depends:    base ^>=4.17.2.1, 
+                      Cabal >= 3.0,
+                      cube-solver,
+                      QuickCheck,
+                      mtl,
+                      text,
+                      megaparsec
+    
+    hs-source-dirs:   test
+
+    default-language: Haskell2010
