@@ -47,5 +47,5 @@ app = serve api server
 
 runServer :: IO ()
 runServer = do
-    putStrLn "Server starting on http://localhost:8082/"
-    run 8082 app
+    putStrLn "Server starting on http://localhost:8080/"
+    run 8080 app
