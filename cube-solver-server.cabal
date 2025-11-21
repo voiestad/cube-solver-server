@@ -1,0 +1,40 @@
+cabal-version:      3.0
+
+name:               cube-solver-server
+
+version:            0.1.0.0
+
+synopsis:           Rubik's cube solver
+
+description:        Epic cube solver program in Haskell. 
+                    Generates a PDF solving manual from a Rubik's cube scramble.
+
+license:            BSD-3-Clause
+license-file:       LICENSE
+
+author:             Vebjørn Øiestad
+
+build-type:         Simple
+
+
+common warnings
+    ghc-options: -Wall
+
+executable cube-solver-server
+    main-is:          Main.hs
+
+    build-depends:    base >=4.17.2.1,
+                      cube-solver,
+                      mtl,
+                      text,
+                      megaparsec,
+                      servant,
+                      servant-server,
+                      wai,
+                      warp,
+                      mtl,
+                      bytestring 
+
+    hs-source-dirs:   app
+
+    default-language: Haskell2010

@@ -1,4 +1,4 @@
-FROM haskell:9.12.2
+FROM haskell:9.6.7
 
 COPY . .
 
