@@ -23,6 +23,8 @@ common warnings
 executable cube-solver-server
     main-is:          Main.hs
 
+    ghc-options: -threaded
+
     build-depends:    base >=4.17.2.1,
                       cube-solver,
                       mtl,

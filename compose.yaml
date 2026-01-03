@@ -1,0 +1,7 @@
+services:
+  cube-solver-server:
+    container_name: cube-solver-server
+    build: .
+    ports:
+      - "8082:8080"
+    restart: always
