@@ -18,18 +18,19 @@ import CubeSolver.PDFCube (generatePDFSolution)
 main :: IO ()
 main = runServer
 
-type CubeSolverApi = "api" :> "cubesolver" :> "solve" :> QueryParam "cube" String :>  Get '[OctetStream] BS.ByteString
-                :<|> "api" :> "cubesolver" :> "validate" :> QueryParam "cube" String :>  Get '[PlainText] String
+type CubeSolverApi = "api" :> "cubesolver" :> "solve" :> QueryParam "cube" String :> Get '[OctetStream] (Headers '[Header "Content-Disposition" String, Header "Content-Type" String] BS.ByteString)
+                :<|> "api" :> "cubesolver" :> "validate" :> QueryParam "cube" String :> Get '[PlainText] String
 
-solveCube :: Maybe String -> Handler BS.ByteString
-solveCube Nothing = return "No parameter given\n"
+solveCube :: Maybe String -> Handler (Headers '[Header "Content-Disposition" String, Header "Content-Type" String] BS.ByteString)
+solveCube Nothing = return $ addHeader "attachment; filename=\"solution_manual.pdf\"" $ addHeader "application/pdf" "No parameter given\n"
 solveCube (Just unparsedCube) = do
     let parsedResult = runParser parseCubeState "" (T.pack unparsedCube)
     case parsedResult of
-        Left _ -> return "Parsing failed\n"
+        Left _ -> return $ addHeader "attachment; filename=\"solution_manual.pdf\"" $ addHeader "application/pdf" "Parsing failed\n"
         Right cubeState -> do
             liftIO $ generatePDFSolution (evalState cfop cubeState) cubeState 
-            liftIO $ BS.readFile "solution_manual.pdf"
+            res <- liftIO $ BS.readFile "solution_manual.pdf"
+            return $ addHeader "attachment; filename=\"solution_manual.pdf\"" $ addHeader "application/pdf" res
 
 validateCube :: Maybe String -> Handler String
 validateCube Nothing = return "false"
